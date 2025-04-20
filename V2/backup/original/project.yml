@@ -1,0 +1,287 @@
+name: LEDMESSENGER
+options:
+  bundleIdPrefix: com.ledmessenger
+  deploymentTarget:
+    iOS: 15.0
+    macOS: 12.0
+  xcodeVersion: 14.0
+  groupSortPosition: top
+  generateEmptyDirectories: true
+  indentWidth: 4
+  tabWidth: 4
+  usesTabs: false
+
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.${PRODUCT_NAME:rfc1034identifier}
+    SWIFT_VERSION: 5.7
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Manual
+    CODE_SIGN_IDENTITY: "-"
+    SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+    ENABLE_BITCODE: NO
+    TARGETED_DEVICE_FAMILY: "1,2"
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 1
+    DEAD_CODE_STRIPPING: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    ENABLE_MODULE_VERIFIER: YES
+    ENABLE_ASSET_SYMBOL_EXTENSIONS: YES
+    
+targets:
+  # ======= Targets =======
+  
+  # Shared framework for iOS
+  LEDMESSENGERiOSShared:
+    type: framework
+    platform: iOS
+    sources:
+      - path: Shared
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        INFOPLIST_FILE: Shared/Info.plist
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: NO
+        PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.shared.ios
+        SKIP_INSTALL: YES
+    info:
+      path: Shared/Info.plist
+      properties:
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        
+  # Shared framework for macOS
+  LEDMESSENGERmacOSShared:
+    type: framework
+    platform: macOS
+    sources:
+      - path: Shared
+        excludes:
+          - "**/.DS_Store"
+    settings:
+      base:
+        INFOPLIST_FILE: Shared/Info.plist
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: NO
+        PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.shared.macos
+        SKIP_INSTALL: YES
+    info:
+      path: Shared/Info.plist
+      properties:
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+    
+  # iOS (iPad) application
+  LEDMESSENGERiPad:
+    type: application
+    platform: iOS
+    deploymentTarget: 15.0
+    sources:
+      - path: iOS
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: LEDMESSENGERiOSShared
+      - sdk: UIKit.framework
+      - sdk: MultipeerConnectivity.framework
+      - sdk: Network.framework
+      - sdk: AVFoundation.framework
+    settings:
+      base:
+        INFOPLIST_FILE: iOS/Info.plist
+        CODE_SIGN_ENTITLEMENTS: iOS/LEDMESSENGER.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        PRODUCT_NAME: LEDMESSENGER
+        TARGETED_DEVICE_FAMILY: "2"  # iPad only
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.ipad
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: ""
+    info:
+      path: iOS/Info.plist
+      properties:
+        CFBundleDisplayName: LED Messenger
+        CFBundleName: LED Messenger
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        UILaunchStoryboardName: LaunchScreen
+        UIRequiresFullScreen: YES
+        UIStatusBarHidden: YES
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        LSRequiresIPhoneOS: YES
+        NSLocalNetworkUsageDescription: "LED Messenger needs to access your local network to communicate with other devices running LED Messenger and to send messages to Resolume Arena"
+        NSBonjourServices:
+          - _ledmessenger._tcp
+        UIBackgroundModes:
+          - remote-notification
+        UIAppFonts: []
+    entitlements:
+      path: iOS/LEDMESSENGER.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
+        com.apple.security.device.bluetooth: true
+  
+  # macOS application
+  LEDMESSENGERmacOS:
+    type: application
+    platform: macOS
+    deploymentTarget: 12.0
+    sources:
+      - path: macOS
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: LEDMESSENGERmacOSShared
+      - sdk: AppKit.framework
+      - sdk: MultipeerConnectivity.framework
+      - sdk: Network.framework
+      - sdk: AVFoundation.framework
+    settings:
+      base:
+        INFOPLIST_FILE: macOS/Info.plist
+        CODE_SIGN_ENTITLEMENTS: macOS/LEDMESSENGER.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        PRODUCT_NAME: LEDMESSENGER
+        ENABLE_HARDENED_RUNTIME: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.macos
+        DEAD_CODE_STRIPPING: YES
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: ""
+    info:
+      path: macOS/Info.plist
+      properties:
+        CFBundleDisplayName: LED Messenger
+        CFBundleName: LED Messenger
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        LSMinimumSystemVersion: "12.0"
+        LSApplicationCategoryType: public.app-category.utilities
+        NSHumanReadableCopyright: "Copyright © 2025. All rights reserved."
+        NSLocalNetworkUsageDescription: "LED Messenger needs to access your local network to communicate with other devices running LED Messenger and to send messages to Resolume Arena"
+        NSBonjourServices:
+          - _ledmessenger._tcp
+    entitlements:
+      path: macOS/LEDMESSENGER.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
+        com.apple.security.device.bluetooth: true
+        com.apple.security.files.user-selected.read-write: true
+
+  # ======= Test Targets =======
+  
+  # iOS Tests
+  LEDMESSENGERiOSTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: 15.0
+    sources:
+      - path: LEDMESSENGERTests
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: LEDMESSENGERiOSShared
+      - target: LEDMESSENGERiPad
+    settings:
+      base:
+        INFOPLIST_FILE: LEDMESSENGERTests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.tests.ios
+    info:
+      path: LEDMESSENGERTests/Info.plist
+      properties:
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+
+  # macOS Tests
+  LEDMESSENGERmacOSTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: 12.0
+    sources:
+      - path: LEDMESSENGERTests
+        excludes:
+          - "**/.DS_Store"
+    dependencies:
+      - target: LEDMESSENGERmacOSShared
+      - target: LEDMESSENGERmacOS
+    settings:
+      base:
+        INFOPLIST_FILE: LEDMESSENGERTests/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.ledmessenger.tests.macos
+        DEAD_CODE_STRIPPING: YES
+    info:
+      path: LEDMESSENGERTests/Info.plist
+      properties:
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+
+# ======= Schemes =======
+
+schemes:
+  LEDMESSENGERiPad:
+    build:
+      targets:
+        LEDMESSENGERiPad: all
+        LEDMESSENGERiOSTests: [test]
+    run:
+      config: Debug
+      environmentVariables:
+        - variable: OS_ACTIVITY_MODE
+          value: disable
+          isEnabled: true
+    test:
+      config: Debug
+      targets:
+        - LEDMESSENGERiOSTests
+      gatherCoverageData: true
+      coverageTargets:
+        - LEDMESSENGERiPad
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+  LEDMESSENGERmacOS:
+    build:
+      targets:
+        LEDMESSENGERmacOS: all
+        LEDMESSENGERmacOSTests: [test]
+    run:
+      config: Debug
+      environmentVariables:
+        - variable: OS_ACTIVITY_MODE
+          value: disable
+          isEnabled: true
+    test:
+      config: Debug
+      targets:
+        - LEDMESSENGERmacOSTests
+      gatherCoverageData: true
+      coverageTargets:
+        - LEDMESSENGERmacOS
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+configs:
+  Debug: debug
+  Release: release
+
+attributes:
+  ORGANIZATIONNAME: LED Messenger

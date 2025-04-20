@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="60" fill="#1a1a1a"/>
+  <g transform="translate(72, 72) scale(0.72)">
+    <!-- LED Display Frame -->
+    <rect x="20" y="20" width="472" height="320" rx="10" fill="#333333" stroke="#666666" stroke-width="4"/>
+    
+    <!-- LED Display Screen -->
+    <rect x="40" y="40" width="432" height="280" rx="5" fill="#000000"/>
+    
+    <!-- Message Text "LED" -->
+    <text x="110" y="170" font-family="Arial, sans-serif" font-size="120" font-weight="bold" fill="#ff0000">LED</text>
+    
+    <!-- Message Text "MSG" -->
+    <text x="110" y="260" font-family="Arial, sans-serif" font-size="90" font-weight="bold" fill="#ff9900">MSG</text>
+    
+    <!-- Stand Base -->
+    <rect x="200" y="340" width="112" height="20" rx="5" fill="#444444"/>
+    <rect x="210" y="360" width="92" height="10" rx="3" fill="#333333"/>
+    
+    <!-- Control Panel -->
+    <rect x="100" y="380" width="312" height="60" rx="8" fill="#444444" stroke="#555555" stroke-width="2"/>
+    
+    <!-- Control Buttons -->
+    <circle cx="130" cy="410" r="12" fill="#ff3333"/>
+    <circle cx="170" cy="410" r="12" fill="#33cc33"/>
+    <circle cx="210" cy="410" r="12" fill="#3333ff"/>
+    
+    <!-- Sliders -->
+    <rect x="250" y="402" width="140" height="16" rx="8" fill="#333333"/>
+    <circle cx="290" cy="410" r="10" fill="#cccccc"/>
+    <circle cx="350" cy="410" r="10" fill="#cccccc"/>
+  </g>
+</svg>
